@@ -1,0 +1,16 @@
+{
+    "name": "Template Recipe",
+    "ingredients": [
+      {
+        "ingredient": "Ramen noodles",
+        "amount": "2 packs"
+      }
+    ],
+    "instructions": [
+      "Step 1",
+      "Step 2"
+    ],
+    "notes": "",
+    "prep_time": 15,
+    "cooking_time": 25
+  }

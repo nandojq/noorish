@@ -1,0 +1,152 @@
+{
+    "name": "Ramen",
+    "servings": 2,
+    "ingredients": [
+      {
+        "ingredient": "Dry Ramen Noodles",
+        "type": "REQUIRED",
+        "amount": 280,
+        "amount_unit": "GRAMS"
+      },
+      {
+        "ingredient": "Bok Choy",
+        "type": "REQUIRED",
+        "amount": 1,
+        "amount_unit": "LARGE_UNIT"
+      },
+      {
+        "ingredient": "Nori Seaweed",
+        "type": "OPTIONAL",
+        "amount": 2,
+        "amount_unit": "LARGE_UNIT"
+      },
+      {
+        "ingredient": "Egg",
+        "type": "OPTIONAL",
+        "amount": 1,
+        "amount_unit": "MEDIUM_UNIT"
+      },
+      {
+        "ingredient": "Toasted White Sesame Seeds",
+        "type": "REQUIRED",
+        "amount": 2,
+        "amount_unit": "TABLESPOON"
+      },
+      {
+        "ingredient": "Ginger",
+        "type": "REQUIRED",
+        "amount": 1.5,
+        "amount_unit": "TEASPOON"
+      },
+      {
+        "ingredient": "Sesame Oil",
+        "type": "REQUIRED",
+        "amount": 1,
+        "amount_unit": "TABLESPOON"
+      },
+      {
+        "ingredient": "Garlic Clove",
+        "type": "REQUIRED",
+        "amount": 2,
+        "amount_unit": "MEDIUM_UNIT"
+      },
+      {
+        "ingredient": "Onion",
+        "type": "REQUIRED",
+        "amount": 1,
+        "amount_unit": "LARGE_UNIT"
+      },
+      {
+        "ingredient": "Green Onion",
+        "type": "REQUIRED",
+        "amount": 2,
+        "amount_unit": "MEDIUM_UNIT"
+      },
+      {
+        "ingredient": "Miso Paste",
+        "type": "REQUIRED",
+        "amount": 1.5,
+        "amount_unit": "TABLESPOON"
+      },
+      {
+        "ingredient": "Soy Sauce",
+        "type": "REQUIRED",
+        "amount": 1.5,
+        "amount_unit": "TABLESPOON"
+      },
+      {
+        "ingredient": "Coconut Milk",
+        "type": "REQUIRED",
+        "amount": 470,
+        "amount_unit": "GRAMS"
+      },
+      {
+        "ingredient": "Salt",
+        "type": "REQUIRED",
+        "amount": 1.5,
+        "amount_unit": "TEASPOON"
+      },
+      {
+        "ingredient": "Black Pepper",
+        "type": "REQUIRED",
+        "amount": 0.5,
+        "amount_unit": "TEASPOON"
+      },
+      {
+        "ingredient": "Shiitake Mushroom",
+        "type": "REQUIRED",
+        "amount": 20,
+        "amount_unit": "MEDIUM_UNIT"
+      },
+      {
+        "ingredient": "Olive Oil",
+        "type": "REQUIRED",
+        "amount": 2,
+        "amount_unit": "TABLESPOON"
+      },
+      {
+        "ingredient": "Tomato Paste",
+        "type": "REQUIRED",
+        "amount": 2,
+        "amount_unit": "TEASPOON"
+      },
+      {
+        "ingredient": "Anise Star",
+        "type": "REQUIRED",
+        "amount": 1,
+        "amount_unit": "MEDIUM_UNIT"
+      },
+      {
+        "ingredient": "Water",
+        "type": "REQUIRED",
+        "amount": 700,
+        "amount_unit": "MILLILITERS"
+      },
+      {
+        "ingredient": "Vegetable Broth Cube",
+        "type": "REQUIRED",
+        "amount": 1,
+        "amount_unit": "MEDIUM_UNIT"
+      }
+
+    ],
+    "prep_instructions": [
+        "Cut the onion in big chunks and the green onions, garlic and ginger in small pieces",
+        "Cut the Bok Choy and the Shiitake Mushrooms in long cuts",
+        "Prepare an Anise Star in an infusion object",
+        "Put the water to boil and insert the Vegetable Broth Cube"
+    ],
+    "instructions": [
+      "In a big pot, heat up the olive oil and cook the onion, green onions, garlic and ginger for 2 min until golden",
+      "Add the tomato paste and cook for another 2 min, while stirring",
+      "Add the vegetable broth and the coconut milk and bring to boiling point",
+      "When boling point is achieved, bring down the fire to medium power and add the bok choy, shiitake mushrooms and the anise star",
+      "Add the miso paste, soy sauce, sesame oil, sesame seeds, salt and pepper",
+      "Stir and let simmer for 25-45 min, check taste 2 or 3 times to adjust salt",
+      "Meanwhile, cook the dry ramen noodles in another pot with boiling water and rinse with fresh water when done",
+      "When the broth and the noodles are ready, serve together in a bowl with any extra topings"
+    ],
+    "notes": "Feel free to customize toppings according to your preference, such as adding nori seaweed, bamboo shoots, or chili oil for extra flavor.",
+    "prep_time": 10,
+    "cooking_time": 45
+  }
