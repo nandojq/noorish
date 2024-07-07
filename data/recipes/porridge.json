@@ -1,0 +1,40 @@
+{
+    "name": "Porridge",
+    "ingredients": [
+      {
+        "ingredient": "Oat Flakes",
+        "amount": 50,
+        "amount_unit": "GRAMS"
+      },
+      {
+        "ingredient": "Seeds and Nuts Mix",
+        "amount": 50,
+        "amount_unit": "GRAMS"
+      },
+      {
+        "ingredient": "Banana",
+        "amount": 1,
+        "amount_unit": "MEDIUM_UNIT"
+      },
+      {
+        "ingredient": "Peanut Butter",
+        "amount": 0.5,
+        "amount_unit": "TABLESPOON"
+      },
+      {
+        "ingredient": "Almond Milk",
+        "amount": 300,
+        "amount_unit": "MILLILITERS"
+      }
+    ],
+    "prep_instructions": [
+      "Cut the banana into slices"
+  ],
+  "instructions": [
+    "In a small pot, add all the ingredients and bring toi boiling point",
+    "Lower the heat and let simmer for 5 minute while stirring"
+  ],
+    "notes": "",
+    "prep_time": 1,
+    "cooking_time": 5
+  }

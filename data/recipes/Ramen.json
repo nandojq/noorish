@@ -1,0 +1,13 @@
+{
+    "Name": "Ramen",
+    "Ingredients": [
+        {"Product": "Tomato paste", "Measure": "Teaspoon", "Quantity": 2.0},
+        {"Product": "Tomato paste", "Measure": "Teaspoon", "Quantity": 2.0}
+    ],
+    "Cooking Time": 60,
+    "Instructions": {
+        "Preparation": "",
+        "Cooking": "",
+        "Serving": ""
+    }
+}
