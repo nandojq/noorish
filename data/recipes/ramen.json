@@ -9,8 +9,8 @@
       },
       {
         "ingredient": "Bok Choy",
-        "amount": 1,
-        "amount_unit": "LARGE_UNIT"
+        "amount": 6,
+        "amount_unit": "CUP"
       },
       {
         "ingredient": "Ginger",
@@ -23,19 +23,19 @@
         "amount_unit": "TABLESPOON"
       },
       {
-        "ingredient": "Garlic",
+        "ingredient": "Garlic Clove",
         "amount": 2,
-        "amount_unit": "MEDIUM_UNIT"
+        "amount_unit": "UNIT"
       },
       {
         "ingredient": "Onion",
         "amount": 1,
-        "amount_unit": "LARGE_UNIT"
+        "amount_unit": "UNIT"
       },
       {
         "ingredient": "Green Onion",
         "amount": 2,
-        "amount_unit": "MEDIUM_UNIT"
+        "amount_unit": "UNIT"
       },
       {
         "ingredient": "Miso Paste",
@@ -64,8 +64,8 @@
       },
       {
         "ingredient": "Shiitake Mushroom",
-        "amount": 20,
-        "amount_unit": "MEDIUM_UNIT"
+        "amount": 72,
+        "amount_unit": "GRAMS"
       },
       {
         "ingredient": "Olive Oil",
@@ -74,13 +74,13 @@
       },
       {
         "ingredient": "Tomato Paste",
-        "amount": 2,
-        "amount_unit": "TEASPOON"
+        "amount": 0.5,
+        "amount_unit": "TABLESPOON"
       },
       {
         "ingredient": "Anise Star",
         "amount": 1,
-        "amount_unit": "MEDIUM_UNIT"
+        "amount_unit": "UNIT"
       },
       {
         "ingredient": "Water",
@@ -90,7 +90,7 @@
       {
         "ingredient": "Vegetable Broth Cube",
         "amount": 1,
-        "amount_unit": "MEDIUM_UNIT"
+        "amount_unit": "UNIT"
       }
 
     ],

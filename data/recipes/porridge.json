@@ -3,8 +3,8 @@
     "ingredients": [
       {
         "ingredient": "Oat Flakes",
-        "amount": 50,
-        "amount_unit": "GRAMS"
+        "amount": 1,
+        "amount_unit": "CUP"
       },
       {
         "ingredient": "Seeds and Nuts Mix",
@@ -14,7 +14,7 @@
       {
         "ingredient": "Banana",
         "amount": 1,
-        "amount_unit": "MEDIUM_UNIT"
+        "amount_unit": "UNIT"
       },
       {
         "ingredient": "Peanut Butter",
@@ -24,14 +24,19 @@
       {
         "ingredient": "Almond Milk",
         "amount": 300,
-        "amount_unit": "MILLILITERS"
+        "amount_unit": "CUP"
+      },
+      {
+        "ingredient": "Frozen Berries",
+        "amount": 80,
+        "amount_unit": "GRAMS"
       }
     ],
     "prep_instructions": [
       "Cut the banana into slices"
   ],
   "instructions": [
-    "In a small pot, add all the ingredients and bring toi boiling point",
+    "In a small pot, add all the ingredients and bring to boiling point",
     "Lower the heat and let simmer for 5 minute while stirring"
   ],
     "notes": "",
