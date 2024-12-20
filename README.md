@@ -2,7 +2,6 @@
 
 Welcome to the Nourish Application! This project aims to help users efficiently plan their weekly meals, track nutritional intake, and make informed decisions for a balanced diet. This README serves as the main documentation for the project, outlining its features, technology stack, and future enhancements.
 
---
 
 ## **Features**
 
@@ -24,8 +23,7 @@ Organize meals using a drag-and-drop interface for main meals, snacks and bevera
 Get suggestions to fill nutritional gaps in the weekly menu. Recommend recipes to balance nutritional intake. Prioritise seasonal or cost-effective recipes.
 Detailed breakdown of nutritional intake for the planned menu.
 Generate a shopping list from selected recipes. Add, remove, or modify items directly in the list for optimised shopping. Get an estimated cost of the shopping for budget control.
-
---                                         
+                                         
 
 ## **Tech Stack**
 
@@ -35,14 +33,12 @@ API: RESTful APIs
 Containerization: Docker
 Hosting: Google Cloud
 
---
 
 ## **3rd Party Integrations**
 
 Nutritional Data: Edamam, Spoonacular APIs
 Authentication: OAuth for social logins
 
---
 
 ## **Getting Started**
 
@@ -63,8 +59,7 @@ uvicorn main:app --reload
 
 Access the App:
 Open http://127.0.0.1:8000 in your browser.
-
--- 
+ 
 
 ## **License**
 
