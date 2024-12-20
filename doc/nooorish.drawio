@@ -1,0 +1,48 @@
+<mxfile host="65bd71144e">
+    <diagram id="mUCjwC0sv2WeWeti4rbg" name="Page-1">
+        <mxGraphModel dx="933" dy="562" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="4" value="" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="2" target="6" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="270" y="195" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="2" value="Login &lt;br&gt;Page" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" parent="1" vertex="1">
+                    <mxGeometry x="140" y="150" width="70" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;" parent="1" source="6" target="8" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Create&lt;br&gt;Menu &lt;br&gt;Page" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;strokeColor=#005700;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="390" y="150" width="70" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="Recipes Page" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="1" vertex="1">
+                    <mxGeometry x="390" y="310" width="70" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Profile &lt;br&gt;Page" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" parent="1" vertex="1">
+                    <mxGeometry x="390" y="470" width="70" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=9;exitX=0;exitY=1;exitDx=0;exitDy=0;" parent="1" source="6" target="10" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="305" y="250" as="sourcePoint"/>
+                        <mxPoint x="400" y="385" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="305" y="515"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="13" value="&lt;font size=&quot;1&quot;&gt;Able to fetch, reviw and add recipes to the menu recipe list. Drag and drop from menu recipe list to day of the week. Real time calculations for each day: prep time (mark if need to cook or leftover), nutritional value for the day (completed and missing), etc&lt;br&gt;Button to create an image of the menu for printing (PDF)&lt;br&gt;Button to create shopping list (copy text to clipboard or download or share to email)&lt;br&gt;&lt;/font&gt;" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;position2=0;size=10;position=0.07;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="70" width="300" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="&lt;font size=&quot;1&quot;&gt;Card visuliazation with photo and nutritional values&lt;br&gt;Add a new recipe (manually or fetching from URL + completing)&lt;br&gt;Add recipe to menu recipe list&lt;br&gt;Change portions (for cooking more or less)&lt;br&gt;Smart filter: Nutrients Champs (Protein, CH, Vitamins..) , Quick Prep, Seasonal, Beverages/Meal/Snack&amp;nbsp;&lt;br&gt;&lt;/font&gt;" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;position2=0;size=10;position=0.07;" parent="1" vertex="1">
+                    <mxGeometry x="480" y="250" width="300" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="&lt;font size=&quot;1&quot;&gt;Card visualization with photo and nutritional values&lt;br&gt;Add a new recipe (manually or fetching from URL + completing)&lt;br&gt;Add recipe to menu recipe list&lt;br&gt;&lt;/font&gt;" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;position2=0;size=10;position=0.07;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="440" width="300" height="90" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
