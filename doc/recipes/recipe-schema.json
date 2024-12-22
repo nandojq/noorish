@@ -1,0 +1,90 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "title": "Recipe",
+    "properties": {
+      "name": {
+        "bsonType": "string",
+        "description": "The name of the recipe"
+      },
+      "image_id": {
+        "bsonType": "objectId",
+        "description": "Reference to the image document ID"
+      },
+      "servings": {
+        "bsonType": "int",
+        "description": "Number of servings"
+      },
+      "ingredients": {
+        "bsonType": "array",
+        "description": "List of ingredients",
+        "items": {
+          "bsonType": "object",
+          "properties": {
+            "ingredient": {
+              "bsonType": "string",
+              "description": "Name of the ingredient. Must be in nutrient database"
+            },
+            "amount": {
+              "bsonType": "double",
+              "description": "Amount of the ingredient"
+            },
+            "amount_unit": {
+              "bsonType": "string",
+              "enum": [
+                "GRAMS",
+                "CUP",
+                "MILLILITERS",
+                "LARGE_UNIT",
+                "MEDIUM_UNIT",
+                "SMALL_UNIT",
+                "TABLESPOON",
+                "TEASPOON"
+              ],
+              "description": "Unit of the amount"
+            }
+          },
+          "required": [
+            "ingredient",
+            "amount",
+            "amount_unit"
+          ]
+        }
+      },
+      "prep_instructions": {
+        "bsonType": "array",
+        "description": "Preparation instructions",
+        "items": {
+          "bsonType": "string"
+        }
+      },
+      "instructions": {
+        "bsonType": "array",
+        "description": "Cooking instructions",
+        "items": {
+          "bsonType": "string"
+        }
+      },
+      "notes": {
+        "bsonType": "string",
+        "description": "Additional notes for the recipe"
+      },
+      "prep_time": {
+        "bsonType": "int",
+        "description": "Preparation time in minutes"
+      },
+      "cooking_time": {
+        "bsonType": "int",
+        "description": "Cooking time in minutes"
+      }
+    },
+    "required": [
+      "name",
+      "servings",
+      "ingredients",
+      "instructions",
+      "prep_time",
+      "cooking_time"
+    ]
+  }
+}

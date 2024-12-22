@@ -1,0 +1,5 @@
+1. When new recipes have been added, run update-product-table notebook to request for an updated product table
+2. Use format-product-table notebook to apply automated formatting changes to the updated product table
+3. Import the formatted, updated table to the Mongo collection using the update-product-collection.py script
+4. Manually check the collection in MongoDB Compass to ensure all fields are correct
+
