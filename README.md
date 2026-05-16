@@ -1,68 +1,181 @@
-# **Noorish**
+# Noorish
 
-Welcome to the Nourish Application! This project aims to help users efficiently plan their weekly meals, track nutritional intake, and make informed decisions for a balanced diet. This README serves as the main documentation for the project, outlining its features, technology stack, and future enhancements.
+A personal nutrition planning tool for building weekly menus, tracking nutrient intake, and generating grocery lists. Built as a local-first web app with a FastAPI backend and React frontend.
 
+---
 
-## **Features**
+## Features
 
-### User Management
+- **Ingredient Database** — Import ingredients from USDA FoodData Central or Open Food Facts, or add them manually with full nutrition data
+- **Recipe Builder** — Compose recipes from ingredients with live nutrition preview, prep/cook instructions, and image upload
+- **Menu Planner** — Drag-and-drop weekly planner assigning recipes to breakfast, lunch, dinner, and snack slots
+- **Nutrition Analysis** — Per-day and weekly-average breakdown with DRI (Daily Reference Intake) comparison and configurable deficiency/excess thresholds
+- **Grocery List** — Auto-generated shopping list aggregated from all recipes in a menu, exportable as TXT or CSV
 
-**Sign Up/Login:** Register or log in with OAuth providers (Google, Facebook).
-**Profile Customization:** Add dietary preferences, allergies, and calorie goals.
+---
 
-### Recipe Management
+## Tech Stack
 
-Wide database containing nutritional information about food products and extra information such as average price and season.
-Store recipes and consult aggregated nutritional details (calories, protein, fat, carbs, vitamins and much more). Add recipes manually or import them via our URLs recipe parser. 
-Provide alternatives for unavailable, unwanted or allergy-triggering ingredients.
-Filter recipes by ingredients, cuisine, or dietary restrictions. 
+| Layer | Technology |
+|---|---|
+| Backend | Python 3.12+, FastAPI (async) |
+| ORM | SQLAlchemy 2.0 async + asyncpg |
+| Migrations | Alembic |
+| Database | PostgreSQL 15+ |
+| Frontend | React 18, Vite |
+| Styling | Tailwind CSS v3, neumorphic design system |
+| Server state | React Query v5 |
+| Charts | Recharts |
+| Drag & drop | @dnd-kit/core |
+| Routing | React Router v6 |
+| Nutrition data | USDA FoodData Central API, Open Food Facts |
 
-### Menu Planning
+---
 
-Organize meals using a drag-and-drop interface for main meals, snacks and beverages.
-Get suggestions to fill nutritional gaps in the weekly menu. Recommend recipes to balance nutritional intake. Prioritise seasonal or cost-effective recipes.
-Detailed breakdown of nutritional intake for the planned menu.
-Generate a shopping list from selected recipes. Add, remove, or modify items directly in the list for optimised shopping. Get an estimated cost of the shopping for budget control.
-                                         
+## Prerequisites
 
-## **Tech Stack**
+- Python 3.12+
+- Node.js 18+
+- PostgreSQL 15+ running locally (or via Docker)
 
-Web Application Framework: NiceGUI
-Database: PostgreSQL for structured data; Redis for caching.
-API: RESTful APIs
-Containerization: Docker
-Hosting: Google Cloud
+---
 
+## Setup
 
-## **3rd Party Integrations**
+### 1. Database
 
-Nutritional Data: Edamam, Spoonacular APIs
-Authentication: OAuth for social logins
+Create the database and user in PostgreSQL:
 
+```sql
+CREATE USER noorish WITH PASSWORD 'noorish';
+CREATE DATABASE noorish OWNER noorish;
+CREATE DATABASE noorish_test OWNER noorish;  -- for tests only
+```
 
-## **Getting Started**
+Or with Docker:
 
-Clone the Repository:
-'''bash
-git clone https://github.com/your-username/weekly-menu-app.git
-'''
+```bash
+docker compose up -d
+```
 
-Install Dependencies:
-'''bash
+### 2. Backend
+
+```bash
+cd backend
+python -m venv .venv
+
+# Windows
+.\.venv\Scripts\activate
+# macOS / Linux
+source .venv/bin/activate
+
 pip install -r requirements.txt
-'''
 
-Run the Application:
-'''bash
-uvicorn main:app --reload
-'''
+# Configure environment
+cp .env.example .env
+# Edit .env and set USDA_API_KEY (optional — only needed for USDA import)
 
-Access the App:
-Open http://127.0.0.1:8000 in your browser.
- 
+# Run migrations
+alembic upgrade head
+```
 
-## **License**
+### 3. Frontend
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+```bash
+cd frontend
+npm install
+```
 
-We hope this application helps make meal planning and healthy eating effortless! If you have any questions or feedback, please open an issue or contact us through GitHub.
+---
+
+## Running
+
+### One command (Windows)
+
+```powershell
+.\start.ps1
+```
+
+This script starts Postgres via Docker, waits for it to be healthy, runs any pending migrations, then launches the backend and frontend. Press **Ctrl+C** to stop everything cleanly.
+
+Requires Docker Desktop to be running. On first run, complete the [Setup](#setup) steps below first.
+
+### Manually (two terminals)
+
+**Terminal 1 — Backend:**
+```bash
+cd backend
+.\.venv\Scripts\activate      # Windows
+# source .venv/bin/activate   # macOS / Linux
+uvicorn app.main:app --reload --port 8000
+```
+
+**Terminal 2 — Frontend:**
+```bash
+cd frontend
+npm run dev
+```
+
+Open **http://localhost:5173** in your browser. The backend API is available at **http://localhost:8000/api**.
+
+---
+
+## Environment Variables
+
+Copy `backend/.env.example` to `backend/.env` and fill in:
+
+| Variable | Description | Default |
+|---|---|---|
+| `DATABASE_URL` | PostgreSQL connection string | `postgresql+asyncpg://noorish:noorish@localhost:5432/noorish` |
+| `USDA_API_KEY` | API key from [api.nal.usda.gov](https://api.nal.usda.gov) | *(empty — USDA import disabled)* |
+| `CORS_ORIGINS` | Allowed frontend origins (JSON array) | `["http://localhost:5173"]` |
+
+---
+
+## Running Tests
+
+```bash
+cd backend
+pip install -r requirements-dev.txt
+pytest            # all tests
+pytest -v         # verbose
+pytest tests/test_nutrition_service.py   # unit tests only (no DB required)
+```
+
+Tests require the `noorish_test` database to exist (see Setup above).
+
+---
+
+## Project Structure
+
+```
+backend/
+  app/
+    config.py          Environment / settings (pydantic-settings)
+    database.py        SQLAlchemy async engine and session
+    constants/dri.py   Daily Reference Intake values
+    models/            ORM models (ingredient, recipe, menu, settings)
+    routers/           FastAPI route handlers
+    schemas/           Pydantic request/response schemas
+    services/          Business logic (nutrition, USDA ingest, OFF ingest)
+  alembic/             Database migrations
+  tests/
+  requirements.txt
+  .env.example
+
+frontend/
+  src/
+    api/client.js      Fetch wrapper (base URL /api)
+    hooks/             React Query hooks
+    components/        Shared UI components
+    views/             Page-level components
+    lib/constants.js   Shared enums and constants
+
+docs/spec/spec.main.md   Master feature specification
+```
+
+---
+
+## License
+
+MIT
