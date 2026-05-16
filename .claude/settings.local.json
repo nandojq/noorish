@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.notion.so)",
+      "Bash(git *)",
+      "PowerShell(New-Item *)",
+      "PowerShell(Get-ChildItem \"C:\\\\Git\\\\noorish\\\\backend\" -Recurse | Where-Object {!$_.PSIsContainer} | Select-Object -ExpandProperty FullName)",
+      "PowerShell(Get-Command *)",
+      "PowerShell(Start-Process \"C:\\\\Program Files\\\\Docker\\\\Docker\\\\Docker Desktop.exe\")",
+      "PowerShell(pip *)",
+      "Bash(docker exec noorish-db-1 *)",
+      "Bash(.\\\\.venv\\\\Scripts\\\\alembic upgrade *)",
+      "PowerShell(Get-ChildItem -Recurse C:\\\\Git\\\\noorish\\\\frontend\\\\src | Where-Object { !$_.PSIsContainer } | Select-Object FullName, Length)",
+      "Bash(node *)",
+      "Bash(npm run *)"
+    ]
+  }
+}

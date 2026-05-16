@@ -1,4 +1,0 @@
-nicegui
-ipykernel
-pandas
-pymongo
