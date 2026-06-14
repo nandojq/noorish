@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
@@ -15,7 +15,6 @@ import { INGREDIENT_CATEGORIES, RECIPE_UNITS, SEASONS } from "@/lib/constants";
 
 const IMAGE_BASE = "http://localhost:8000/api/recipes";
 
-// Debounce helper
 function useDebounce(value, ms = 300) {
   const [deb, setDeb] = useState(value);
   useEffect(() => {
@@ -43,7 +42,11 @@ function IngredientSearch({ onSelect }) {
   return (
     <div className="relative" ref={ref}>
       <div className="relative">
-        <MagnifyingGlass size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-low" />
+        <MagnifyingGlass
+          size={14}
+          className="absolute left-3 top-1/2 -translate-y-1/2"
+          style={{ color: "var(--color-text-low)" }}
+        />
         <Input
           placeholder="Search ingredient…"
           value={query}
@@ -68,14 +71,17 @@ function IngredientSearch({ onSelect }) {
               }}
               className="w-full text-left px-3 py-2 text-sm hover:bg-primary/10 transition-colors"
             >
-              <span className="font-medium text-dark">{ing.name}</span>
-              <span className="text-xs text-text-low ml-2">{ing.category}</span>
+              <span className="font-medium" style={{ color: "var(--color-text-high)" }}>{ing.name}</span>
+              <span className="text-xs ml-2" style={{ color: "var(--color-text-low)" }}>{ing.category}</span>
             </button>
           ))}
         </div>
       )}
       {open && debounced && results?.length === 0 && (
-        <div className="absolute z-20 left-0 right-0 top-full mt-1 rounded-lg border border-border px-3 py-2 text-xs text-text-low" style={{ background: "var(--color-surface)" }}>
+        <div
+          className="absolute z-20 left-0 right-0 top-full mt-1 rounded-lg border border-border px-3 py-2 text-xs"
+          style={{ background: "var(--color-surface)", color: "var(--color-text-low)" }}
+        >
           No ingredients found
         </div>
       )}
@@ -85,9 +91,17 @@ function IngredientSearch({ onSelect }) {
 
 function SectionCard({ title, children }) {
   return (
-    <div className="rounded-xl overflow-hidden" style={{ background: "var(--color-surface)", boxShadow: "var(--shadow-raised)" }}>
+    <div
+      className="rounded-xl overflow-hidden border border-border"
+      style={{ background: "var(--color-surface)", boxShadow: "var(--shadow-raised)" }}
+    >
       <div className="px-6 py-4 border-b border-border">
-        <h2 className="font-semibold text-dark" style={{ fontFamily: "var(--font-display)", fontSize: "1.05rem" }}>{title}</h2>
+        <h2
+          className="font-semibold"
+          style={{ fontFamily: "var(--font-display)", fontSize: "1.05rem", color: "var(--color-text-high)" }}
+        >
+          {title}
+        </h2>
       </div>
       <div className="px-6 py-5">{children}</div>
     </div>
@@ -97,7 +111,7 @@ function SectionCard({ title, children }) {
 function Field({ label, required, error, children }) {
   return (
     <div className="space-y-1">
-      <Label className="text-xs font-medium text-text-mid">
+      <Label className="text-xs font-medium" style={{ color: "var(--color-text-mid)" }}>
         {label}{required && <span className="text-error ml-0.5">*</span>}
       </Label>
       {children}
@@ -113,8 +127,8 @@ function NeuTextarea({ value, onChange, placeholder, rows = 3 }) {
       onChange={onChange}
       placeholder={placeholder}
       rows={rows}
-      className="w-full text-sm text-dark rounded-lg border border-border bg-light resize-none px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-text-low"
-      style={{ boxShadow: "var(--shadow-inset-sm)" }}
+      className="w-full text-sm rounded-lg border border-kf-neutral-200 resize-none px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-text-placeholder"
+      style={{ color: "var(--color-text-high)", background: "var(--color-surface-alt)" }}
     />
   );
 }
@@ -124,8 +138,8 @@ function NeuSelect({ value, onChange, children }) {
     <select
       value={value}
       onChange={onChange}
-      className="w-full h-9 text-sm text-dark rounded-lg border border-border bg-light px-3 focus:outline-none focus:ring-2 focus:ring-primary"
-      style={{ boxShadow: "var(--shadow-inset-sm)" }}
+      className="w-full h-9 text-sm rounded-lg border border-kf-neutral-200 px-3 focus:outline-none focus:ring-2 focus:ring-primary"
+      style={{ color: "var(--color-text-high)", background: "var(--color-surface-alt)" }}
     >
       {children}
     </select>
@@ -159,7 +173,6 @@ export default function RecipeForm() {
   const [preview, setPreview] = useState(null);
   const [errors, setErrors] = useState({});
 
-  // Pre-fill form when editing
   useEffect(() => {
     if (existing && isEdit) {
       setForm({
@@ -185,7 +198,6 @@ export default function RecipeForm() {
     }
   }, [existing, isEdit]);
 
-  // Live nutrition preview
   useEffect(() => {
     const validIngredients = ingredients.filter(
       (i) => i.ingredientId && i.amount > 0
@@ -322,10 +334,17 @@ export default function RecipeForm() {
     <form onSubmit={handleSubmit} className="max-w-3xl mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <button type="button" onClick={() => navigate(isEdit ? `/recipes/${id}` : "/recipes")} className="icon-btn">
+        <button
+          type="button"
+          onClick={() => navigate(isEdit ? `/recipes/${id}` : "/recipes")}
+          className="icon-btn"
+        >
           <ArrowLeft size={18} />
         </button>
-        <h1 className="text-2xl font-bold text-dark" style={{ fontFamily: "var(--font-display)" }}>
+        <h1
+          className="text-2xl font-bold"
+          style={{ fontFamily: "var(--font-display)", color: "var(--color-text-high)" }}
+        >
           {isEdit ? "Edit Recipe" : "New Recipe"}
         </h1>
       </div>
@@ -400,8 +419,8 @@ export default function RecipeForm() {
       <SectionCard title="Image">
         <div className="flex items-start gap-4">
           <div
-            className="w-24 h-24 rounded-lg overflow-hidden shrink-0"
-            style={{ boxShadow: "var(--shadow-inset-sm)", background: "var(--color-surface-down)" }}
+            className="w-24 h-24 rounded-lg overflow-hidden shrink-0 border border-border"
+            style={{ background: "var(--color-surface-down)" }}
           >
             {imagePreview ? (
               <img src={imagePreview} alt="preview" className="w-full h-full object-cover" />
@@ -412,10 +431,16 @@ export default function RecipeForm() {
             )}
           </div>
           <div className="flex-1">
-            <p className="text-xs text-text-mid mb-2">JPEG, PNG or WebP · Max 5 MB</p>
+            <p className="text-xs mb-2" style={{ color: "var(--color-text-mid)" }}>
+              JPEG, PNG or WebP · Max 5 MB
+            </p>
             <label
-              className="inline-flex items-center gap-2 text-sm font-medium cursor-pointer px-4 py-2 rounded-pill"
-              style={{ background: "var(--color-surface)", boxShadow: "var(--shadow-raised-sm)", color: "var(--color-text-mid)", borderRadius: "var(--radius-pill)" }}
+              className="inline-flex items-center gap-2 text-sm font-medium cursor-pointer px-4 py-2 border border-border rounded-pill"
+              style={{
+                background: "var(--color-surface-alt)",
+                color: "var(--color-text-mid)",
+                borderRadius: "var(--radius-pill)",
+              }}
             >
               <Image size={14} />
               Choose image
@@ -443,22 +468,29 @@ export default function RecipeForm() {
             {ingredients.map((ing, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-2 p-2 rounded-lg"
-                style={{ background: "var(--color-surface)", boxShadow: "var(--shadow-raised-sm)" }}
+                className="flex items-center gap-2 p-2 rounded-lg border border-border"
+                style={{ background: "var(--color-surface-alt)" }}
               >
-                <span className="flex-1 text-sm font-medium text-dark truncate">{ing.ingredientName}</span>
+                <span
+                  className="flex-1 text-sm font-medium truncate"
+                  style={{ color: "var(--color-text-high)" }}
+                >
+                  {ing.ingredientName}
+                </span>
                 <input
                   type="number"
                   value={ing.amount}
                   onChange={(e) => updateIngredient(idx, "amount", e.target.value)}
-                  className="w-20 text-sm text-center rounded-md border border-border bg-light h-7 px-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-20 text-sm text-center rounded-md border border-kf-neutral-200 h-7 px-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  style={{ color: "var(--color-text-high)", background: "var(--color-surface)" }}
                   min={0}
                   step={0.1}
                 />
                 <select
                   value={ing.unit}
                   onChange={(e) => updateIngredient(idx, "unit", e.target.value)}
-                  className="text-sm rounded-md border border-border bg-light h-7 px-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="text-sm rounded-md border border-kf-neutral-200 h-7 px-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  style={{ color: "var(--color-text-high)", background: "var(--color-surface)" }}
                 >
                   {RECIPE_UNITS.map((u) => (
                     <option key={u.value} value={u.value}>{u.label}</option>
@@ -467,7 +499,8 @@ export default function RecipeForm() {
                 <button
                   type="button"
                   onClick={() => removeIngredient(idx)}
-                  className="text-text-low hover:text-error transition-colors"
+                  className="hover:text-error transition-colors"
+                  style={{ color: "var(--color-text-low)" }}
                 >
                   <Trash size={14} />
                 </button>
@@ -483,40 +516,100 @@ export default function RecipeForm() {
       <SectionCard title="Instructions">
         {prepInstructions.length > 0 && (
           <div className="mb-4">
-            <p className="text-xs font-medium text-text-mid uppercase tracking-wide mb-2">Prep</p>
+            <p
+              className="text-xs font-medium uppercase tracking-wide mb-2"
+              style={{ color: "var(--color-text-mid)" }}
+            >
+              Prep
+            </p>
             {prepInstructions.map((step, idx) => (
               <div key={idx} className="flex gap-2 mb-2 items-start">
-                <span className="w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center shrink-0 mt-1.5" style={{ background: "var(--color-secondary)", color: "#fff" }}>{idx + 1}</span>
-                <NeuTextarea value={step} onChange={(e) => updateInstruction(prepInstructions, setPrepInstructions, idx, e.target.value)} rows={2} />
-                <button type="button" onClick={() => removeInstruction(prepInstructions, setPrepInstructions, idx)} className="text-text-low hover:text-error mt-1.5 shrink-0"><Trash size={14} /></button>
+                <span
+                  className="w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center shrink-0 mt-1.5 bg-kf-teal-50"
+                  style={{ color: "#075A51" }}
+                >
+                  {idx + 1}
+                </span>
+                <NeuTextarea
+                  value={step}
+                  onChange={(e) => updateInstruction(prepInstructions, setPrepInstructions, idx, e.target.value)}
+                  rows={2}
+                />
+                <button
+                  type="button"
+                  onClick={() => removeInstruction(prepInstructions, setPrepInstructions, idx)}
+                  className="hover:text-error mt-1.5 shrink-0 transition-colors"
+                  style={{ color: "var(--color-text-low)" }}
+                >
+                  <Trash size={14} />
+                </button>
               </div>
             ))}
           </div>
         )}
-        <button type="button" onClick={() => addInstruction(prepInstructions, setPrepInstructions)} className="text-xs text-text-mid hover:text-primary flex items-center gap-1 mb-6">
+        <button
+          type="button"
+          onClick={() => addInstruction(prepInstructions, setPrepInstructions)}
+          className="text-xs flex items-center gap-1 mb-6 hover:opacity-70 transition-opacity"
+          style={{ color: "var(--color-text-mid)" }}
+        >
           <Plus size={12} /> Add prep step
         </button>
 
-        <p className="text-xs font-medium text-text-mid uppercase tracking-wide mb-2">Cook{" "}<span className="text-error">*</span></p>
+        <p
+          className="text-xs font-medium uppercase tracking-wide mb-2"
+          style={{ color: "var(--color-text-mid)" }}
+        >
+          Cook <span className="text-error">*</span>
+        </p>
         {errors.cookInstructions && <p className="text-xs text-error mb-2">{errors.cookInstructions}</p>}
         {cookInstructions.map((step, idx) => (
           <div key={idx} className="flex gap-2 mb-2 items-start">
-            <span className="w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center shrink-0 mt-1.5" style={{ background: "var(--color-accent)", color: "#fff" }}>{idx + 1}</span>
-            <NeuTextarea value={step} onChange={(e) => updateInstruction(cookInstructions, setCookInstructions, idx, e.target.value)} rows={2} />
+            <span
+              className="w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center shrink-0 mt-1.5 bg-kf-orange-50"
+              style={{ color: "#7A340E" }}
+            >
+              {idx + 1}
+            </span>
+            <NeuTextarea
+              value={step}
+              onChange={(e) => updateInstruction(cookInstructions, setCookInstructions, idx, e.target.value)}
+              rows={2}
+            />
             {cookInstructions.length > 1 && (
-              <button type="button" onClick={() => removeInstruction(cookInstructions, setCookInstructions, idx)} className="text-text-low hover:text-error mt-1.5 shrink-0"><Trash size={14} /></button>
+              <button
+                type="button"
+                onClick={() => removeInstruction(cookInstructions, setCookInstructions, idx)}
+                className="hover:text-error mt-1.5 shrink-0 transition-colors"
+                style={{ color: "var(--color-text-low)" }}
+              >
+                <Trash size={14} />
+              </button>
             )}
           </div>
         ))}
-        <button type="button" onClick={() => addInstruction(cookInstructions, setCookInstructions)} className="text-xs text-text-mid hover:text-primary flex items-center gap-1">
+        <button
+          type="button"
+          onClick={() => addInstruction(cookInstructions, setCookInstructions)}
+          className="text-xs flex items-center gap-1 hover:opacity-70 transition-opacity"
+          style={{ color: "var(--color-text-mid)" }}
+        >
           <Plus size={12} /> Add cook step
         </button>
       </SectionCard>
 
       {/* Nutrition preview */}
       {ns && (
-        <div className="rounded-xl p-4" style={{ background: "var(--color-surface)", boxShadow: "var(--shadow-raised)" }}>
-          <p className="text-xs font-medium text-text-mid uppercase tracking-wide mb-3">Live nutrition preview (per serving)</p>
+        <div
+          className="rounded-xl p-4 border border-border"
+          style={{ background: "var(--color-surface)", boxShadow: "var(--shadow-raised)" }}
+        >
+          <p
+            className="text-xs font-medium uppercase tracking-wide mb-3"
+            style={{ color: "var(--color-text-mid)" }}
+          >
+            Live nutrition preview (per serving)
+          </p>
           <div className="grid grid-cols-4 gap-3">
             {[
               { label: "Calories", value: Math.round(ns.calories || 0), unit: "kcal" },
@@ -524,10 +617,19 @@ export default function RecipeForm() {
               { label: "Carbs", value: (ns.macronutrients?.carbohydrates || 0).toFixed(1), unit: "g" },
               { label: "Fat", value: (ns.macronutrients?.fat || 0).toFixed(1), unit: "g" },
             ].map(({ label, value, unit }) => (
-              <div key={label} className="text-center py-2 rounded-lg" style={{ background: "var(--color-surface)", boxShadow: "var(--shadow-inset-sm)" }}>
-                <p className="data-value text-lg font-bold text-dark" style={{ fontFamily: "var(--font-mono)" }}>{value}</p>
-                <p className="text-xs text-text-low">{unit}</p>
-                <p className="text-xs text-text-mid">{label}</p>
+              <div
+                key={label}
+                className="text-center py-2 rounded-lg border border-border"
+                style={{ background: "var(--color-surface-alt)" }}
+              >
+                <p
+                  className="data-value text-lg font-bold"
+                  style={{ fontFamily: "var(--font-mono)", color: "var(--color-text-high)" }}
+                >
+                  {value}
+                </p>
+                <p className="text-xs" style={{ color: "var(--color-text-low)" }}>{unit}</p>
+                <p className="text-xs" style={{ color: "var(--color-text-mid)" }}>{label}</p>
               </div>
             ))}
           </div>

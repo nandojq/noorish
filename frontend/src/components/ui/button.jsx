@@ -6,12 +6,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-accent text-light hover:bg-accent/90",
+        default: "bg-accent text-light hover:bg-accent/90 shadow-[var(--shadow-button)]",
         outline:
-          "border border-border bg-transparent text-dark hover:bg-border/40",
+          "border border-kf-neutral-200 bg-transparent hover:bg-border/40",
         destructive: "bg-deficient text-white hover:bg-deficient/90",
-        ghost: "bg-transparent text-dark hover:bg-border/40",
-        secondary: "bg-light text-dark border border-border hover:bg-border/40",
+        ghost: "bg-transparent hover:bg-border/40",
+        secondary: "border border-kf-neutral-200 hover:bg-border/40",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -27,10 +27,11 @@ const buttonVariants = cva(
   }
 );
 
-export function Button({ className, variant, size, ...props }) {
+export function Button({ className, variant, size, style, ...props }) {
   return (
     <button
       className={cn(buttonVariants({ variant, size }), className)}
+      style={{ color: "var(--color-text-high)", ...style }}
       {...props}
     />
   );

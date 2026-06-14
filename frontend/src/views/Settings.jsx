@@ -9,8 +9,8 @@ function FieldGroup({ label, description, children }) {
   return (
     <div className="flex items-start justify-between gap-6 py-5 border-b border-border last:border-none">
       <div className="flex-1">
-        <p className="text-sm font-semibold text-dark">{label}</p>
-        {description && <p className="text-xs text-text-mid mt-0.5">{description}</p>}
+        <p className="text-sm font-semibold text-text-high">{label}</p>
+        {description && <p className="text-xs text-text-high mt-0.5">{description}</p>}
       </div>
       <div className="shrink-0">{children}</div>
     </div>
@@ -27,7 +27,7 @@ function NeuInput({ value, onChange, min, max, error }) {
           onChange={onChange}
           min={min}
           max={max}
-          className="w-24 text-center font-mono text-dark text-sm rounded-lg border border-border bg-light h-9 px-3 focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-24 text-center font-mono text-text-high text-sm rounded-lg border border-border bg-surface-alt h-9 px-3 focus:outline-none focus:ring-2 focus:ring-primary"
           style={{ boxShadow: "var(--shadow-inset-sm)" }}
         />
         <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-text-low pointer-events-none">%</span>
@@ -81,21 +81,21 @@ export default function Settings() {
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-2xl font-bold text-dark mb-1" style={{ fontFamily: "var(--font-display)" }}>
+      <h1 className="text-2xl font-bold text-text-high mb-1" style={{ fontFamily: "var(--font-display)" }}>
         Settings
       </h1>
-      <p className="text-sm text-text-mid mb-8">Configure analysis thresholds and preferences.</p>
+      <p className="text-sm text-text-high mb-8">Configure analysis thresholds and preferences.</p>
 
       {/* Nutrition Thresholds */}
       <div
-        className="rounded-xl overflow-hidden mb-6"
-        style={{ background: "var(--color-surface)", boxShadow: "var(--shadow-raised)" }}
+        className="rounded-xl overflow-hidden mb-6 border border-border"
+        style={{ background: "var(--color-surface)" }}
       >
         <div className="px-6 py-4 border-b border-border">
-          <h2 className="font-semibold text-dark" style={{ fontFamily: "var(--font-display)", fontSize: "1.05rem" }}>
+          <h2 className="font-semibold text-text-high" style={{ fontFamily: "var(--font-display)", fontSize: "1.05rem" }}>
             Nutrition Thresholds
           </h2>
-          <p className="text-xs text-text-mid mt-0.5">
+          <p className="text-xs text-text-high mt-0.5">
             Controls how nutrients are flagged in the analysis view. Based on % of Daily Value (DV).
           </p>
         </div>
@@ -139,10 +139,10 @@ export default function Settings() {
 
       {/* Threshold visual guide */}
       <div
-        className="rounded-xl p-4 mb-8"
-        style={{ background: "var(--color-surface)", boxShadow: "var(--shadow-inset-sm)" }}
+        className="rounded-xl border border-border p-4 mb-8"
+        style={{ background: "var(--color-surface)" }}
       >
-        <p className="text-xs font-medium text-text-mid mb-3 uppercase tracking-wide">Colour coding guide</p>
+        <p className="text-xs font-medium text-text-high mb-3 uppercase tracking-wide">Colour coding guide</p>
         <div className="flex flex-col gap-2">
           {[
             { color: "var(--color-error)", label: `Below ${deficiency || "70"}% DV`, desc: "Deficient" },
@@ -151,7 +151,7 @@ export default function Settings() {
           ].map(({ color, label, desc }) => (
             <div key={desc} className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full shrink-0" style={{ background: color }} />
-              <span className="text-xs font-medium text-dark w-40">{label}</span>
+              <span className="text-xs font-medium text-text-high w-40">{label}</span>
               <span className="text-xs text-text-mid">{desc}</span>
             </div>
           ))}
@@ -171,16 +171,16 @@ export default function Settings() {
 
       {/* Data Sources placeholder */}
       <div
-        className="rounded-xl overflow-hidden mt-8 opacity-60"
-        style={{ background: "var(--color-surface)", boxShadow: "var(--shadow-raised)" }}
+        className="rounded-xl overflow-hidden mt-8 border border-border"
+        style={{ background: "var(--color-surface)" }}
       >
         <div className="px-6 py-4 border-b border-border">
-          <h2 className="font-semibold text-dark" style={{ fontFamily: "var(--font-display)", fontSize: "1.05rem" }}>
+          <h2 className="font-semibold text-text-high" style={{ fontFamily: "var(--font-display)", fontSize: "1.05rem" }}>
             Data Sources
           </h2>
-          <p className="text-xs text-text-mid mt-0.5">Phase 2 — Coming soon.</p>
+          <p className="text-xs text-text-high mt-0.5">Phase 2 — Coming soon.</p>
         </div>
-        <div className="px-6 py-4 text-sm text-text-mid">
+        <div className="px-6 py-4 text-sm text-text-high">
           USDA FoodData Central and Open Food Facts integration toggles will appear here.
         </div>
       </div>

@@ -263,28 +263,28 @@ export default function RecipeDetail() {
                     label="Protein"
                     value={ns.macronutrients?.protein}
                     unit="g"
-                    color="#79A486"
+                    color="#12A99A"
                     total={totalMacros}
                   />
                   <MacroBar
                     label="Carbohydrates"
                     value={ns.macronutrients?.carbohydrates}
                     unit="g"
-                    color="#C49450"
+                    color="#E06620"
                     total={totalMacros}
                   />
                   <MacroBar
                     label="Fat"
                     value={ns.macronutrients?.fat}
                     unit="g"
-                    color="#C0614E"
+                    color="#C93434"
                     total={totalMacros}
                   />
                   <MacroBar
                     label="Fiber"
                     value={ns.macronutrients?.fiber}
                     unit="g"
-                    color="#79A486"
+                    color="#12A99A"
                     total={28}
                   />
                 </div>

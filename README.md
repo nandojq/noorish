@@ -120,6 +120,40 @@ Open **http://localhost:5173** in your browser. The backend API is available at 
 
 ---
 
+## Importing Recipes from URL
+
+The backend exposes a reusable import endpoint for AI-assisted recipe creation:
+
+- `POST /api/recipes/import`
+- Request body must follow the `RecipeImportRequest` schema
+- Each ingredient may include either `ingredientId` or `ingredientName`
+- Missing ingredient matches create low-quality stub ingredients automatically
+
+Example payload:
+
+```json
+{
+  "name": "Roasted Aubergines with Butter Beans & Chilli Pesto",
+  "description": "A bulk-style recipe imported from a URL.",
+  "servings": 4,
+  "ingredients": [
+    {"ingredientName": "Large aubergines", "amount": 2, "unit": "pieces"},
+    {"ingredientName": "Butter beans", "amount": 400, "unit": "grams"},
+    {"ingredientName": "Calabrian chilli pesto", "amount": 240, "unit": "grams"}
+  ],
+  "prepInstructions": ["Preheat oven.", "Slice aubergines and season.", "Roast until tender."],
+  "cookInstructions": ["Mix with beans and pesto.", "Serve warm."],
+  "prepTimeMinutes": 15,
+  "cookTimeMinutes": 35,
+  "source": "ottolenghi",
+  "sourceUrl": "https://ottolenghi.co.uk/pages/recipes/roasted-aubergines-butter-beans-chilli-pesto"
+}
+```
+
+The import endpoint returns the created recipe with nutrition computed by the backend.
+
+---
+
 ## Environment Variables
 
 Copy `backend/.env.example` to `backend/.env` and fill in:

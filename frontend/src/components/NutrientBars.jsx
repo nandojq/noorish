@@ -9,9 +9,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const DEFICIENT_COLOR = "#E07C7C";
-const ADEQUATE_COLOR = "#89C4A0";
-const EXCESS_COLOR = "#E8A87C";
+/* Recharts fill props require literal color values, not CSS variables */
+const DEFICIENT_COLOR = "#C93434";  /* kf error red */
+const ADEQUATE_COLOR  = "#12A99A";  /* kf-teal-400 */
+const EXCESS_COLOR    = "#E06620";  /* kf-orange-400 */
+const AXIS_COLOR      = "#161A1F";  /* kf-neutral-900 */
 
 function getColor(percentDv, deficiencyThreshold, excessThreshold) {
   if (percentDv < deficiencyThreshold) return DEFICIENT_COLOR;
@@ -30,7 +32,7 @@ function CustomTooltip({ active, payload }) {
   const d = payload[0]?.payload;
   if (!d) return null;
   return (
-    <div className="bg-dark text-light rounded-lg px-3 py-2 text-xs shadow-lg">
+    <div className="bg-kf-blue-900 text-kf-blue-50 rounded-lg px-3 py-2 text-xs popover-shadow">
       <p className="font-semibold">{formatNutrientName(d.nutrient)}</p>
       <p>
         {d.dailyAverageValue?.toFixed(1)} {d.unit}
@@ -52,7 +54,7 @@ export default function NutrientBars({
 
   if (!data.length) {
     return (
-      <p className="text-sm text-dark/60 text-center py-8">No nutrient data available.</p>
+      <p className="text-sm text-text-mid text-center py-8">No nutrient data available.</p>
     );
   }
 
@@ -70,21 +72,21 @@ export default function NutrientBars({
           type="number"
           domain={[0, 100]}
           tickFormatter={(v) => `${v * 2}%`}
-          tick={{ fontSize: 10, fill: "#2E3D42" }}
+          tick={{ fontSize: 10, fill: AXIS_COLOR }}
         />
         <YAxis
           type="category"
           dataKey="nutrient"
           tickFormatter={formatNutrientName}
-          tick={{ fontSize: 11, fill: "#2E3D42" }}
+          tick={{ fontSize: 11, fill: AXIS_COLOR }}
           width={136}
         />
         <Tooltip content={<CustomTooltip />} />
         <ReferenceLine
           x={50}
-          stroke="#2E3D42"
+          stroke={AXIS_COLOR}
           strokeDasharray="2 2"
-          label={{ value: "100%", position: "right", fontSize: 10, fill: "#2E3D42" }}
+          label={{ value: "100%", position: "right", fontSize: 10, fill: AXIS_COLOR }}
         />
         <ReferenceLine
           x={defLine}

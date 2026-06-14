@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Plus, MagnifyingGlass, Trash, ArrowClockwise } from "@phosphor-icons/react";
+import { Plus, MagnifyingGlass, Trash } from "@phosphor-icons/react";
 import {
   useIngredients, useDeleteIngredient,
   useSearchUSDA, useImportUSDA,
@@ -10,23 +10,36 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import ConfirmDialog from "@/components/ConfirmDialog";
 import EmptyState from "@/components/EmptyState";
 import { INGREDIENT_CATEGORIES, DATA_QUALITY } from "@/lib/constants";
 
-const IMAGE_BASE = "http://localhost:8000";
+// CSS-variable-aware color tokens — responsive to dark mode via index.css media query
+const C = {
+  textHigh:  "var(--color-text-high)",
+  textMid:   "var(--color-text-mid)",
+  textLow:   "var(--color-text-low)",
+  surface:   "var(--color-surface)",
+  surfaceUp: "var(--color-surface-up)",
+  surfaceDown: "var(--color-surface-down)",
+};
 
 function QualityBadge({ quality }) {
   const map = {
-    high:   { label: "High",   style: { background: "#D4EDE0", color: "#3A8A60" } },
-    medium: { label: "Medium", style: { background: "#FAE2D0", color: "#9A5030" } },
-    low:    { label: "Low",    style: { background: "#E8EEF0", color: "#5A7A85" } },
+    high:   { label: "High",   cls: "bg-green/20" },
+    medium: { label: "Medium", cls: "bg-accent/20" },
+    low:    { label: "Low",    cls: "bg-[var(--color-surface-down)]" },
   };
-  const { label, style } = map[quality] || map.low;
+  const { label, cls } = map[quality] || map.low;
   return (
-    <span className="text-xs font-medium px-2 py-0.5 rounded-full" style={style}>{label}</span>
+    <span
+      className={`text-xs font-medium px-2 py-0.5 rounded-full ${cls}`}
+      style={{ color: C.textHigh }}
+    >
+      {label}
+    </span>
   );
 }
 
@@ -56,7 +69,13 @@ function USDATab({ onSuccess }) {
   return (
     <div className="space-y-4">
       <form onSubmit={handleSearch} className="flex gap-2">
-        <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search USDA FoodData Central…" className="flex-1" />
+        <Input
+          aria-label="Search USDA FoodData Central"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Search USDA FoodData Central…"
+          className="flex-1"
+        />
         <Button type="submit" variant="outline" size="sm" disabled={!q.trim()}>
           <MagnifyingGlass size={14} />
           Search
@@ -71,22 +90,22 @@ function USDATab({ onSuccess }) {
               key={r.fdcId}
               onClick={() => { setSelected(r); setNameOverride(r.name); }}
               type="button"
-              className="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors"
-              style={{
-                background: selected?.fdcId === r.fdcId ? "var(--color-primary)" : "var(--color-surface)",
-                color: selected?.fdcId === r.fdcId ? "#fff" : "var(--color-text-high)",
-                boxShadow: "var(--shadow-raised-sm)",
-              }}
+              style={
+                selected?.fdcId === r.fdcId
+                  ? { background: "var(--color-primary)", color: C.textHigh }
+                  : { background: C.surface, color: C.textHigh }
+              }
+              className="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors shadow-raised-sm outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 hover:bg-primary/15"
             >
               <span className="font-medium">{r.name}</span>
-              <span className="ml-2 text-xs opacity-70">{r.dataType}</span>
+              <span className="ml-2 text-xs" style={{ color: C.textMid }}>{r.dataType}</span>
             </button>
           ))}
         </div>
       )}
       {selected && (
         <div className="space-y-2">
-          <Label className="text-xs text-text-mid">Edit name before importing</Label>
+          <Label className="text-xs" style={{ color: C.textMid }}>Edit name before importing</Label>
           <Input value={nameOverride} onChange={(e) => setNameOverride(e.target.value)} />
           <Button onClick={handleImport} disabled={importUSDA.isPending} className="w-full">
             {importUSDA.isPending ? "Importing…" : `Import "${nameOverride || selected.name}"`}
@@ -123,7 +142,13 @@ function OFFTab({ onSuccess }) {
   return (
     <div className="space-y-4">
       <form onSubmit={handleSearch} className="flex gap-2">
-        <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search Open Food Facts…" className="flex-1" />
+        <Input
+          aria-label="Search Open Food Facts"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Search Open Food Facts…"
+          className="flex-1"
+        />
         <Button type="submit" variant="outline" size="sm" disabled={!q.trim()}>
           <MagnifyingGlass size={14} />
           Search
@@ -138,12 +163,12 @@ function OFFTab({ onSuccess }) {
               key={r.offId}
               onClick={() => { setSelected(r); setNameOverride(r.name); }}
               type="button"
-              className="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors"
-              style={{
-                background: selected?.offId === r.offId ? "var(--color-primary)" : "var(--color-surface)",
-                color: selected?.offId === r.offId ? "#fff" : "var(--color-text-high)",
-                boxShadow: "var(--shadow-raised-sm)",
-              }}
+              style={
+                selected?.offId === r.offId
+                  ? { background: "var(--color-primary)", color: C.textHigh }
+                  : { background: C.surface, color: C.textHigh }
+              }
+              className="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors shadow-raised-sm outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 hover:bg-primary/15"
             >
               <span className="font-medium">{r.name}</span>
             </button>
@@ -152,7 +177,7 @@ function OFFTab({ onSuccess }) {
       )}
       {selected && (
         <div className="space-y-2">
-          <Label className="text-xs text-text-mid">Edit name before importing</Label>
+          <Label className="text-xs" style={{ color: C.textMid }}>Edit name before importing</Label>
           <Input value={nameOverride} onChange={(e) => setNameOverride(e.target.value)} />
           <Button onClick={handleImport} disabled={importOFF.isPending} className="w-full">
             {importOFF.isPending ? "Importing…" : `Import "${nameOverride || selected.name}"`}
@@ -227,9 +252,13 @@ function ManualTab({ onSuccess }) {
     );
   };
 
+  const selectCls = "w-full mt-1 h-9 text-sm rounded-lg border px-2 outline-none focus:ring-2 focus:ring-primary hover:border-primary/60";
+
   const nField = (key, label, required) => (
     <div>
-      <Label className="text-xs text-text-mid">{label}{required && <span className="text-error ml-0.5">*</span>}</Label>
+      <Label className="text-xs" style={{ color: C.textMid }}>
+        {label}{required && <span className="text-error ml-0.5">*</span>}
+      </Label>
       <Input type="number" min={0} step={0.01} value={nutrition[key]} onChange={(e) => setN(key, e.target.value)} className="mt-1" />
       {errors[key] && <p className="text-xs text-error mt-0.5">{errors[key]}</p>}
     </div>
@@ -238,26 +267,38 @@ function ManualTab({ onSuccess }) {
   return (
     <div className="space-y-4">
       <div>
-        <Label className="text-xs text-text-mid">Name <span className="text-error">*</span></Label>
+        <Label className="text-xs" style={{ color: C.textMid }}>
+          Name <span className="text-error">*</span>
+        </Label>
         <Input value={form.name} onChange={(e) => setF("name", e.target.value)} placeholder="e.g. Spinach" className="mt-1" />
         {errors.name && <p className="text-xs text-error mt-0.5">{errors.name}</p>}
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label className="text-xs text-text-mid">Category</Label>
-          <select value={form.category} onChange={(e) => setF("category", e.target.value)} className="w-full mt-1 h-9 text-sm rounded-lg border border-border bg-light px-2 focus:outline-none focus:ring-2 focus:ring-primary">
+          <Label className="text-xs" style={{ color: C.textMid }}>Category</Label>
+          <select
+            value={form.category}
+            onChange={(e) => setF("category", e.target.value)}
+            className={selectCls}
+            style={{ background: C.surface, color: C.textHigh, borderColor: C.surfaceDown }}
+          >
             {INGREDIENT_CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
           </select>
         </div>
         <div>
-          <Label className="text-xs text-text-mid">Season</Label>
-          <select value={form.season} onChange={(e) => setF("season", e.target.value)} className="w-full mt-1 h-9 text-sm rounded-lg border border-border bg-light px-2 focus:outline-none focus:ring-2 focus:ring-primary">
+          <Label className="text-xs" style={{ color: C.textMid }}>Season</Label>
+          <select
+            value={form.season}
+            onChange={(e) => setF("season", e.target.value)}
+            className={selectCls}
+            style={{ background: C.surface, color: C.textHigh, borderColor: C.surfaceDown }}
+          >
             {[{v:"all_year",l:"All Year"},{v:"winter",l:"Winter"},{v:"spring",l:"Spring"},{v:"summer",l:"Summer"},{v:"autumn",l:"Autumn"}].map(({v,l}) => <option key={v} value={v}>{l}</option>)}
           </select>
         </div>
       </div>
 
-      <p className="text-xs font-medium text-text-mid uppercase tracking-wide">Macros per 100g</p>
+      <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: C.textMid }}>Macros per 100g</p>
       <div className="grid grid-cols-2 gap-3">
         {nField("calories", "Calories (kcal)", true)}
         {nField("protein", "Protein (g)", true)}
@@ -266,7 +307,7 @@ function ManualTab({ onSuccess }) {
         {nField("fiber", "Fiber (g)")}
         {nField("sugar", "Sugar (g)")}
       </div>
-      <p className="text-xs font-medium text-text-mid uppercase tracking-wide">Key micros (optional)</p>
+      <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: C.textMid }}>Key micros (optional)</p>
       <div className="grid grid-cols-2 gap-3">
         {nField("sodium", "Sodium (mg)")}
         {nField("calcium", "Calcium (mg)")}
@@ -299,16 +340,28 @@ function AddIngredientModal({ open, onClose }) {
           <DialogTitle>Add Ingredient</DialogTitle>
         </DialogHeader>
 
-        <div className="flex gap-1 mb-5 p-1 rounded-lg" style={{ background: "var(--color-surface-down)" }}>
+        <div className="flex gap-1 mb-5 p-1 rounded-lg" style={{ background: C.surfaceDown }}>
           {tabs.map(({ key, label }) => (
             <button
               key={key}
               onClick={() => setActiveTab(key)}
-              className="flex-1 py-1.5 text-sm font-medium rounded-md transition-all"
-              style={{
-                background: activeTab === key ? "var(--color-surface)" : "transparent",
-                color: activeTab === key ? "var(--color-primary-dark)" : "var(--color-text-mid)",
-                boxShadow: activeTab === key ? "var(--shadow-raised-sm)" : "none",
+              className="flex-1 py-1.5 text-sm font-medium rounded-md transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
+              style={
+                activeTab === key
+                  ? { background: C.surface, color: C.textHigh, boxShadow: "var(--shadow-raised-sm)" }
+                  : { background: "transparent", color: C.textMid }
+              }
+              onMouseEnter={(e) => {
+                if (activeTab !== key) {
+                  e.currentTarget.style.color = C.textHigh;
+                  e.currentTarget.style.background = C.surfaceUp;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== key) {
+                  e.currentTarget.style.color = C.textMid;
+                  e.currentTarget.style.background = "transparent";
+                }
               }}
             >
               {label}
@@ -346,11 +399,16 @@ export default function IngredientDatabase() {
     });
   };
 
+  const filterSelectCls = "h-9 text-sm rounded-lg border px-3 outline-none focus:ring-2 focus:ring-primary hover:border-primary/60";
+
   return (
     <div className="max-w-7xl mx-auto p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-dark" style={{ fontFamily: "var(--font-display)" }}>
+        <h1
+          className="text-2xl font-bold"
+          style={{ fontFamily: "var(--font-display)", color: C.textHigh }}
+        >
           Ingredients
         </h1>
         <button onClick={() => setAddOpen(true)} className="btn-primary flex items-center gap-2">
@@ -362,8 +420,13 @@ export default function IngredientDatabase() {
       {/* Filters */}
       <div className="flex flex-wrap gap-3 mb-6">
         <div className="relative flex-1 min-w-48">
-          <MagnifyingGlass size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-low" />
+          <MagnifyingGlass
+            size={14}
+            className="absolute left-3 top-1/2 -translate-y-1/2"
+            style={{ color: C.textLow }}
+          />
           <Input
+            aria-label="Search ingredients by name or alias"
             placeholder="Search by name or alias…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -373,7 +436,8 @@ export default function IngredientDatabase() {
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="h-9 text-sm rounded-lg border border-border bg-light px-3 focus:outline-none focus:ring-2 focus:ring-primary"
+          className={filterSelectCls}
+          style={{ background: C.surface, color: C.textHigh, borderColor: C.surfaceDown }}
         >
           <option value="">All categories</option>
           {INGREDIENT_CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
@@ -381,7 +445,8 @@ export default function IngredientDatabase() {
         <select
           value={dataQuality}
           onChange={(e) => setDataQuality(e.target.value)}
-          className="h-9 text-sm rounded-lg border border-border bg-light px-3 focus:outline-none focus:ring-2 focus:ring-primary"
+          className={filterSelectCls}
+          style={{ background: C.surface, color: C.textHigh, borderColor: C.surfaceDown }}
         >
           <option value="">All quality</option>
           {DATA_QUALITY.map((q) => <option key={q.value} value={q.value}>{q.label}</option>)}
@@ -402,40 +467,45 @@ export default function IngredientDatabase() {
           action={!search && !category && !dataQuality ? { label: "Add an ingredient", onClick: () => setAddOpen(true) } : undefined}
         />
       ) : (
-        <div className="rounded-xl overflow-hidden" style={{ background: "var(--color-surface)", boxShadow: "var(--shadow-raised)" }}>
+        <div
+          className="rounded-xl overflow-hidden"
+          style={{ background: C.surface, boxShadow: "var(--shadow-raised-sm)" }}
+        >
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border" style={{ background: "var(--color-surface-down)" }}>
+              <tr style={{ background: C.surfaceDown, borderBottom: `1px solid ${C.surfaceDown}` }}>
                 {["Name", "Category", "Cal/100g", "Protein", "Fat", "Carbs", "Source", "Quality", ""].map((h) => (
-                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-text-mid">{h}</th>
+                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold" style={{ color: C.textMid }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {ingredients.map((ing, i) => {
+              {ingredients.map((ing) => {
                 const n = ing.nutritionPer100G || ing.nutritionPer100g || {};
                 const macros = n.macronutrients || {};
                 return (
                   <tr
                     key={ing.id}
-                    className="border-b border-border/40 last:border-none hover:bg-primary/5 transition-colors"
+                    className="last:border-none hover:bg-primary/5 transition-colors"
+                    style={{ borderBottom: `1px solid ${C.surfaceDown}` }}
                   >
-                    <td className="px-4 py-3 font-medium text-dark">{ing.name}</td>
-                    <td className="px-4 py-3 text-text-mid capitalize">{ing.category?.replace(/_/g, " ")}</td>
-                    <td className="px-4 py-3 data-value text-dark" style={{ fontFamily: "var(--font-mono)" }}>
+                    <td className="px-4 py-3 font-medium" style={{ color: C.textHigh }}>{ing.name}</td>
+                    <td className="px-4 py-3 capitalize" style={{ color: C.textMid }}>{ing.category?.replace(/_/g, " ")}</td>
+                    <td className="px-4 py-3" style={{ fontFamily: "var(--font-mono)", color: C.textHigh }}>
                       {Math.round(n.calories || 0)}
                     </td>
-                    <td className="px-4 py-3 text-text-mid">{(macros.protein || 0).toFixed(1)}g</td>
-                    <td className="px-4 py-3 text-text-mid">{(macros.fat || 0).toFixed(1)}g</td>
-                    <td className="px-4 py-3 text-text-mid">{(macros.carbohydrates || 0).toFixed(1)}g</td>
-                    <td className="px-4 py-3 text-text-low text-xs">{ing.metadata?.source || "—"}</td>
+                    <td className="px-4 py-3" style={{ color: C.textMid }}>{(macros.protein || 0).toFixed(1)}g</td>
+                    <td className="px-4 py-3" style={{ color: C.textMid }}>{(macros.fat || 0).toFixed(1)}g</td>
+                    <td className="px-4 py-3" style={{ color: C.textMid }}>{(macros.carbohydrates || 0).toFixed(1)}g</td>
+                    <td className="px-4 py-3 text-xs" style={{ color: C.textMid }}>{ing.metadata?.source || "—"}</td>
                     <td className="px-4 py-3">
                       <QualityBadge quality={ing.metadata?.dataQuality} />
                     </td>
                     <td className="px-4 py-3">
                       <button
                         onClick={() => setDeleteTarget(ing)}
-                        className="text-text-low hover:text-error transition-colors"
+                        className="hover:text-error transition-colors outline-none focus-visible:ring-2 focus-visible:ring-error/50 focus-visible:rounded"
+                        style={{ color: C.textMid }}
                         aria-label="Delete"
                       >
                         <Trash size={15} />
@@ -446,7 +516,10 @@ export default function IngredientDatabase() {
               })}
             </tbody>
           </table>
-          <div className="px-4 py-2 border-t border-border text-xs text-text-low">
+          <div
+            className="px-4 py-2 text-xs"
+            style={{ borderTop: `1px solid ${C.surfaceDown}`, color: C.textMid }}
+          >
             {ingredients.length} ingredient{ingredients.length !== 1 ? "s" : ""}
           </div>
         </div>

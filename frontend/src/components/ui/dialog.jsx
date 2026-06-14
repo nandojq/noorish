@@ -28,7 +28,7 @@ export function DialogContent({ className, children, onClose, ...props }) {
   return (
     <div
       className={cn(
-        "relative bg-light rounded-xl shadow-lg border border-border p-6 max-h-[90vh] overflow-y-auto",
+        "relative bg-light rounded-xl border border-border p-6 max-h-[90vh] overflow-y-auto popover-shadow",
         className
       )}
       {...props}

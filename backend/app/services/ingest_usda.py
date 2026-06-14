@@ -141,8 +141,18 @@ def _build_nutrition_per_100g(nutrients: list[dict]) -> dict:
     }
 
     for nutrient in nutrients:
-        name = nutrient.get("nutrientName") or nutrient.get("name", "")
-        value = nutrient.get("value")
+        # FoodData Central returns nested structure: {nutrient: {name, unitName}, amount}
+        if "nutrient" in nutrient:
+            name = nutrient["nutrient"].get("name", "")
+            unit = nutrient["nutrient"].get("unitName", "")
+            value = nutrient.get("amount")
+            # Skip kJ energy — keep only kcal
+            if name == "Energy" and unit != "kcal":
+                continue
+        else:
+            # Fallback for any older flat format: {nutrientName, value}
+            name = nutrient.get("nutrientName") or nutrient.get("name", "")
+            value = nutrient.get("value")
         if value is None:
             continue
         value = float(value)
@@ -261,7 +271,7 @@ async def import_usda(
         "density_g_per_ml": None,
         "nutrition_per_100g": nutrition_per_100g,
         "environmental_impact": None,
-        "metadata": {
+        "ingredient_metadata": {
             "source": "usda",
             "source_id": str(fdc_id),
             "last_updated": datetime.now(timezone.utc).isoformat(),

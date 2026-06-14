@@ -171,7 +171,7 @@ def _map_product_to_ingredient(product: dict, name_override: str | None = None) 
         "density_g_per_ml": None,
         "nutrition_per_100g": nutrition_per_100g,
         "environmental_impact": None,
-        "metadata": {
+        "ingredient_metadata": {
             "source": "open_food_facts",
             "source_id": str(source_id),
             "last_updated": datetime.now(timezone.utc).isoformat(),

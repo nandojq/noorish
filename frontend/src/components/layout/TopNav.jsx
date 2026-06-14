@@ -19,8 +19,8 @@ function NavLink({ to, label }) {
         fontFamily: "var(--font-body)",
         fontSize: "0.875rem",
         fontWeight: 500,
-        color: match ? "var(--color-accent)" : "rgba(232,238,240,0.8)",
-        borderBottom: match ? "2px solid var(--color-accent)" : "2px solid transparent",
+        color: match ? "var(--kf-orange-400)" : "var(--color-nav-text)",
+        borderBottom: match ? "2px solid var(--kf-orange-400)" : "2px solid transparent",
         paddingBottom: "2px",
         textDecoration: "none",
         transition: "color var(--transition-fast)",
@@ -44,12 +44,12 @@ export default function TopNav() {
 
   return (
     <nav
-      style={{ background: "#1A2830", boxShadow: "0 2px 16px rgba(0,0,0,0.15)" }}
-      className="fixed top-0 left-0 right-0 z-40 h-14 flex items-center px-6 gap-10"
+      style={{ background: "var(--color-nav-bg)" }}
+      className="fixed top-0 left-0 right-0 z-40 h-14 flex items-center px-6 gap-10 border-b border-border"
     >
       <Link
         to="/"
-        style={{ fontFamily: "var(--font-display)", fontSize: "1.375rem", fontWeight: 700, color: "var(--color-surface-up)", letterSpacing: "-0.01em", textDecoration: "none" }}
+        style={{ fontFamily: "var(--font-display)", fontSize: "1.375rem", fontWeight: 700, color: "var(--kf-blue-50)", letterSpacing: "-0.01em", textDecoration: "none" }}
         className="shrink-0"
       >
         Noorish
@@ -63,9 +63,9 @@ export default function TopNav() {
 
       <Link
         to="/settings"
-        style={{ color: "rgba(232,238,240,0.6)", transition: "color var(--transition-fast)" }}
-        onMouseOver={(e) => (e.currentTarget.style.color = "var(--color-accent)")}
-        onMouseOut={(e) => (e.currentTarget.style.color = "rgba(232,238,240,0.6)")}
+        style={{ color: "var(--color-nav-text-dim)", transition: "color var(--transition-fast)" }}
+        onMouseOver={(e) => (e.currentTarget.style.color = "var(--kf-orange-400)")}
+        onMouseOut={(e) => (e.currentTarget.style.color = "var(--color-nav-text-dim)")}
         aria-label="Settings"
       >
         <GearSix size={22} weight="regular" />

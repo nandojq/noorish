@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils";
 
-export function Label({ className, ...props }) {
+export function Label({ className, style, ...props }) {
   return (
     <label
-      className={cn("text-sm font-medium text-dark", className)}
+      className={cn("text-sm font-medium", className)}
+      style={{ color: "var(--color-text-high)", ...style }}
       {...props}
     />
   );

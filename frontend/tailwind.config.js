@@ -4,26 +4,48 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Remapped to kingfisher palette — existing class names kept for component compatibility
-        main:    "#F0F4F5",   // Soft Cloud
-        light:   "#E8EEF0",   // Pearl Mist (surface)
-        "surface-up":   "#F5F8F9",
-        "surface-down": "#D8E2E6",
-        dark:    "#2E3D42",   // Deep Slate
-        "text-mid":  "#5A7A85", // Storm Blue
-        "text-low":  "#9BB4BC", // Pale Haze
-        primary:      "#7FB5C8", // Kingfisher Blue
-        "primary-dark": "#5A9AB5",
-        secondary:    "#6ECFC0", // Teal Crown
-        accent:  "#E8A87C",   // Amber Breast
-        "accent-light": "#F5C9A8",
-        green:   "#89C4A0",   // Sage Reed
-        border:  "#D8E2E6",   // Surface Down
-        deficient: "#E07C7C", // Coral Dusk
-        excess:    "#E8A87C", // Amber Wing (same as accent)
-        success:   "#89C4A0",
-        warning:   "#E8A87C",
-        error:     "#E07C7C",
+        /* ── Kingfisher palette tokens (for class-based access) ── */
+        "kf-blue-50":     "#EAF5FB",
+        "kf-blue-400":    "#1E9DD6",
+        "kf-blue-600":    "#0F6E9E",
+        "kf-blue-800":    "#0B4F72",
+        "kf-blue-900":    "#063348",
+        "kf-teal-400":    "#12A99A",
+        "kf-teal-50":     "#E2F7F4",
+        "kf-orange-400":  "#E06620",
+        "kf-orange-50":   "#FEF0E6",
+        "kf-neutral-50":  "#F2F3F4",
+        "kf-neutral-100": "#D2D5D8",
+        "kf-neutral-200": "#A8ADB3",
+        "kf-neutral-400": "#6D747C",
+        "kf-neutral-600": "#454C54",
+        "kf-neutral-800": "#2A3038",
+        "kf-neutral-900": "#161A1F",
+
+        /* ── Semantic aliases (existing class names preserved) ── */
+        main:              "#F2F3F4",
+        light:             "#FFFFFF",
+        "surface-up":     "#F7F9FA",
+        "surface-alt":    "#F7F9FA",
+        "surface-down":   "#C8DCE6",
+        dark:              "#161A1F",
+        "text-high":      "#161A1F",
+        "text-mid":       "#454C54",
+        "text-low":       "#6D747C",
+        "text-placeholder": "#6D747C",
+        "text-disabled":  "#A8ADB3",
+        primary:           "#1E9DD6",
+        "primary-dark":   "#0F6E9E",
+        secondary:      "#12A99A",
+        accent:         "#E06620",
+        "accent-light": "#FEF0E6",
+        green:          "#12A99A",
+        border:         "#D2D5D8",
+        deficient:      "#C93434",
+        excess:         "#E06620",
+        success:        "#12A99A",
+        warning:        "#E06620",
+        error:          "#C93434",
       },
       fontFamily: {
         display: ["Lora", "Georgia", "serif"],
@@ -32,21 +54,25 @@ export default {
         sans:    ["DM Sans", "system-ui", "sans-serif"],
       },
       borderRadius: {
-        "radius-sm":  "8px",
-        "radius-md":  "14px",
-        "radius-lg":  "20px",
-        "radius-xl":  "28px",
+        "radius-sm":   "6px",
+        "radius-md":   "10px",
+        "radius-lg":   "14px",
+        "radius-xl":   "20px",
         "radius-pill": "999px",
         xl: "20px",
         lg: "14px",
       },
       boxShadow: {
-        raised:    "6px 6px 14px #C8D4D8, -6px -6px 14px #FFFFFF",
-        "raised-sm": "3px 3px 8px #C8D4D8, -3px -3px 8px #FFFFFF",
-        inset:     "inset 4px 4px 10px #C8D4D8, inset -4px -4px 10px #FFFFFF",
-        "inset-sm": "inset 2px 2px 6px #C8D4D8, inset -2px -2px 6px #FFFFFF",
-        pressed:   "inset 3px 3px 8px #B8C8CE, inset -3px -3px 8px #FFFFFF",
-        elevated:  "10px 10px 20px #C0CCCE, -10px -10px 20px #FFFFFF",
+        sm:       "var(--shadow-raised-sm)",
+        md:       "var(--shadow-card)",
+        lg:       "var(--shadow-popover)",
+        raised:      "var(--shadow-card)",
+        "raised-sm": "var(--shadow-raised-sm)",
+        inset:       "var(--shadow-inset)",
+        "inset-sm":  "var(--shadow-inset-sm)",
+        pressed:     "var(--shadow-pressed)",
+        button:      "var(--shadow-button)",
+        popover:     "var(--shadow-popover)",
       },
     },
   },

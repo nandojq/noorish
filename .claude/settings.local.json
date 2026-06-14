@@ -12,7 +12,13 @@
       "Bash(.\\\\.venv\\\\Scripts\\\\alembic upgrade *)",
       "PowerShell(Get-ChildItem -Recurse C:\\\\Git\\\\noorish\\\\frontend\\\\src | Where-Object { !$_.PSIsContainer } | Select-Object FullName, Length)",
       "Bash(node *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(curl *)",
+      "Bash(python -m json.tool)",
+      "Bash(python -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(f'{i[\\\\\"id\\\\\"]} | {i[\\\\\"name\\\\\"]}'\\) for i in data]\")",
+      "Bash(python -c \"import sys,json; data=json.load\\(sys.stdin\\); items=data if isinstance\\(data,list\\) else data.get\\('items',data.get\\('results',[]\\)\\); [print\\(f'{i[\\\\\"id\\\\\"]} | {i[\\\\\"name\\\\\"]}'\\) for i in items]\")",
+      "Bash(python *)",
+      "WebFetch(*)"
     ]
   }
 }

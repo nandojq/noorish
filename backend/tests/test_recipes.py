@@ -102,6 +102,88 @@ async def test_create_recipe_invalid_ingredient_returns_422(client: AsyncClient)
     assert r.status_code == 422
 
 
+async def test_import_recipe_from_url_body_creates_recipe_with_stub_ingredients(
+    client: AsyncClient,
+):
+    payload = {
+        "name": "Imported Ottolenghi Recipe",
+        "description": "Imported from a URL",
+        "servings": 4,
+        "ingredients": [
+            {
+                "ingredientName": "Butter beans",
+                "amount": 400,
+                "unit": "grams",
+            },
+            {
+                "ingredientName": "Calabrian chilli pesto",
+                "amount": 240,
+                "unit": "grams",
+            },
+        ],
+        "cookInstructions": [
+            "Mix the ingredients and roast until golden.",
+        ],
+        "prepTimeMinutes": 15,
+        "cookTimeMinutes": 35,
+        "source": "ottolenghi",
+        "sourceUrl": "https://ottolenghi.co.uk/pages/recipes/roasted-aubergines-butter-beans-chilli-pesto",
+    }
+
+    r = await client.post("/api/recipes/import", json=payload)
+    assert r.status_code == 201, r.text
+    data = r.json()
+    assert data["name"] == "Imported Ottolenghi Recipe"
+    assert data["status"] == "complete"
+    assert data["source"] == "ottolenghi"
+    assert len(data["ingredients"]) == 2
+    assert data["ingredients"][0]["ingredientName"] == "Butter beans"
+    assert data["ingredients"][1]["ingredientName"] == "Calabrian chilli pesto"
+
+
+async def test_import_festive_hummus_recipe_from_url(client: AsyncClient):
+    payload = {
+        "name": "Festive hummus with roasted brussels sprouts and chestnuts",
+        "description": "Ottolenghi festive hummus imported from URL.",
+        "servings": 8,
+        "ingredients": [
+            {"ingredientName": "Olive oil", "amount": 120, "unit": "ml"},
+            {"ingredientName": "Sage leaves", "amount": 10, "unit": "grams"},
+            {"ingredientName": "Cooked chestnuts", "amount": 200, "unit": "grams"},
+            {"ingredientName": "Brussels sprouts", "amount": 400, "unit": "grams"},
+            {"ingredientName": "Lemon", "amount": 120, "unit": "grams"},
+            {"ingredientName": "Cooked chickpeas", "amount": 500, "unit": "grams"},
+            {"ingredientName": "Garlic cloves", "amount": 10, "unit": "grams"},
+            {"ingredientName": "Ground cumin", "amount": 0.25, "unit": "tsp"},
+            {"ingredientName": "Tahini", "amount": 120, "unit": "ml"},
+            {"ingredientName": "White balsamic vinegar", "amount": 1, "unit": "tbsp"},
+        ],
+        "prepInstructions": [
+            "Preheat the oven to 230°C.",
+            "Heat oil in a tray and crisp the sage leaves, then remove them.",
+        ],
+        "cookInstructions": [
+            "Roast the chestnuts, brussels sprouts, lemon zest, salt and pepper until charred.",
+            "Blend chickpeas, garlic, water, cumin, tahini and lemon juice until smooth.",
+            "Whisk olive oil, lemon juice and white balsamic into a dressing.",
+            "Assemble hummus, top with roasted vegetables, sage and the dressing.",
+        ],
+        "prepTimeMinutes": 15,
+        "cookTimeMinutes": 20,
+        "source": "ottolenghi",
+        "sourceUrl": "https://ottolenghi.co.uk/pages/recipes/festive-hummus-roasted-brussels-sprouts-chestnuts",
+    }
+
+    r = await client.post("/api/recipes/import", json=payload)
+    assert r.status_code == 201, r.text
+    data = r.json()
+    assert data["name"] == "Festive hummus with roasted brussels sprouts and chestnuts"
+    assert data["status"] == "complete"
+    assert data["source"] == "ottolenghi"
+    assert data["sourceUrl"] == payload["sourceUrl"]
+    assert len(data["ingredients"]) == 10
+
+
 async def test_create_recipe_missing_servings_returns_422(client: AsyncClient):
     ing = await _create_ingredient(client)
     payload = _recipe_payload(ing["id"])

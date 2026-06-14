@@ -1,9 +1,10 @@
 import uuid
+from datetime import datetime
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from fastapi.responses import Response
-from sqlalchemy import select
+from sqlalchemy import select, or_, String, cast
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -16,6 +17,7 @@ from app.schemas.recipe import (
     RecipeResponse,
     RecipeNutritionPreview,
 )
+from app.schemas.recipe_import import RecipeImportRequest
 from app.services.nutrition import compute_recipe_nutrition
 
 router = APIRouter()
@@ -69,6 +71,143 @@ async def _validate_ingredient_ids(
     return ingredient_map
 
 
+async def _find_ingredient_by_name_or_alias(
+    name: str,
+    db: AsyncSession,
+) -> Ingredient | None:
+    stmt = select(Ingredient).where(
+        or_(
+            Ingredient.name.ilike(name),
+            cast(Ingredient.aliases, String).ilike(f"%{name}%"),
+        )
+    )
+    return (await db.execute(stmt)).scalars().first()
+
+
+async def _create_stub_ingredient(
+    name: str,
+    db: AsyncSession,
+) -> Ingredient:
+    metadata = {
+        "source": "imported",
+        "source_id": None,
+        "last_updated": datetime.utcnow().isoformat(),
+        "data_quality": "low",
+    }
+    ingredient = Ingredient(
+        name=name,
+        aliases=[name],
+        category="unknown",
+        season=None,
+        unit_weights=None,
+        density_g_per_ml=None,
+        nutrition_per_100g={
+            "calories": 0.0,
+            "macronutrients": {
+                "protein": 0.0,
+                "carbohydrates": 0.0,
+                "fat": 0.0,
+                "fiber": 0.0,
+                "sugar": 0.0,
+                "saturated_fat": 0.0,
+                "trans_fat": 0.0,
+                "polyunsaturated_fat": 0.0,
+                "monounsaturated_fat": 0.0,
+                "added_sugars": 0.0,
+                "cholesterol": 0.0,
+            },
+            "micronutrients": {
+                "vitamins": {
+                    "vitamin_a": 0.0,
+                    "vitamin_c": 0.0,
+                    "vitamin_d": 0.0,
+                    "vitamin_e": 0.0,
+                    "vitamin_k": 0.0,
+                    "thiamine": 0.0,
+                    "riboflavin": 0.0,
+                    "niacin": 0.0,
+                    "vitamin_b6": 0.0,
+                    "folate": 0.0,
+                    "vitamin_b12": 0.0,
+                },
+                "minerals": {
+                    "calcium": 0.0,
+                    "iron": 0.0,
+                    "magnesium": 0.0,
+                    "phosphorus": 0.0,
+                    "potassium": 0.0,
+                    "zinc": 0.0,
+                    "copper": 0.0,
+                    "manganese": 0.0,
+                    "selenium": 0.0,
+                    "sodium": 0.0,
+                },
+            },
+        },
+        environmental_impact=None,
+        ingredient_metadata=metadata,
+    )
+    db.add(ingredient)
+    await db.flush()
+    await db.refresh(ingredient)
+    return ingredient
+
+
+async def _resolve_import_ingredients(
+    ingredient_rows: list[dict],
+    db: AsyncSession,
+) -> tuple[list[dict], dict[str, dict]]:
+    resolved_rows = []
+    ingredient_map: dict[str, dict] = {}
+
+    for row in ingredient_rows:
+        ingredient_id = row.get("ingredient_id")
+        ingredient_name = row.get("ingredient_name")
+
+        if ingredient_id:
+            try:
+                ingredient_id = str(uuid.UUID(str(ingredient_id)))
+            except ValueError:
+                raise HTTPException(
+                    status_code=422,
+                    detail={"message": f"Invalid ingredient ID: {ingredient_id}"},
+                )
+            result = await db.execute(select(Ingredient).where(Ingredient.id == ingredient_id))
+            ingredient = result.scalars().first()
+            if not ingredient:
+                if not ingredient_name:
+                    raise HTTPException(
+                        status_code=422,
+                        detail={"message": f"Ingredient ID not found: {ingredient_id}"},
+                    )
+                ingredient = await _create_stub_ingredient(ingredient_name, db)
+        else:
+            if not ingredient_name:
+                raise HTTPException(
+                    status_code=422,
+                    detail={"message": "ingredientName is required when ingredientId is not provided"},
+                )
+            ingredient = await _find_ingredient_by_name_or_alias(ingredient_name, db)
+            if not ingredient:
+                ingredient = await _create_stub_ingredient(ingredient_name, db)
+
+        resolved = {
+            "ingredient_id": str(ingredient.id),
+            "ingredient_name": ingredient.name,
+            "amount": float(row.get("amount", 0)),
+            "unit": row.get("unit", "grams"),
+        }
+        resolved_rows.append(resolved)
+        ingredient_map[str(ingredient.id)] = {
+            "name": ingredient.name,
+            "nutrition_per_100g": ingredient.nutrition_per_100g,
+            "unit_weights": ingredient.unit_weights,
+            "density_g_per_ml": ingredient.density_g_per_ml,
+        }
+
+    return resolved_rows, ingredient_map
+
+
 # ── endpoints ─────────────────────────────────────────────────────────────────
 
 @router.get("/recipes", response_model=list[RecipeResponse])
@@ -94,6 +233,40 @@ async def preview_recipe_nutrition(
     ingredient_map = await _fetch_ingredient_map(rows, db)
     total, per_serving = compute_recipe_nutrition(rows, ingredient_map, body.servings)
     return RecipeNutritionPreview(nutrition_total=total, nutrition_per_serving=per_serving)
+
+
+@router.post("/recipes/import", response_model=RecipeResponse, status_code=201)
+async def import_recipe(
+    body: RecipeImportRequest,
+    db: AsyncSession = Depends(get_db),
+):
+    rows, ingredient_map = await _resolve_import_ingredients(
+        [r.model_dump(mode="json") for r in body.ingredients],
+        db,
+    )
+
+    total, per_serving = compute_recipe_nutrition(rows, ingredient_map, body.servings)
+
+    recipe = Recipe(
+        name=body.name,
+        description=body.description,
+        servings=body.servings,
+        ingredients=rows,
+        prep_instructions=body.prep_instructions,
+        cook_instructions=body.cook_instructions,
+        prep_time_minutes=body.prep_time_minutes,
+        cook_time_minutes=body.cook_time_minutes,
+        tags=body.tags,
+        source=body.source or "imported",
+        source_url=body.source_url,
+        status="complete",
+        nutrition_total=total,
+        nutrition_per_serving=per_serving,
+    )
+    db.add(recipe)
+    await db.flush()
+    await db.refresh(recipe)
+    return recipe
 
 
 @router.get("/recipes/{recipe_id}", response_model=RecipeResponse)
